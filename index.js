@@ -4,9 +4,13 @@ const mongoose = require('mongoose');
 
 const bodyParser= require('body-parser');
 
+const cors = require('cors');
+
 app.use(bodyParser.urlencoded({extended: true}))
 
-app.use(bodyParser.json())
+app.use(bodyParser.json());
+
+app.use(cors());
 
 mongoose.connect('mongodb://localhost/registro_aulas', { useMongoClient: true });
 mongoose.Promise = global.Promise;
@@ -19,7 +23,6 @@ const schema = {
 };
 
 const RegistrosModel = mongoose.model('Registros', schema);
-
 
 const testRegistro = {
     titulo : 'Aula 2',
@@ -38,9 +41,6 @@ const registro = new RegistrosModel(testRegistro);
 });
 
 
-app.get('/', (req, res)=> {
-  //Retorna registros
-});
 
 app.post('/registros', (req, res)=> {
     //Cria registros
@@ -55,22 +55,52 @@ app.post('/registros', (req, res)=> {
     const registro = new RegistrosModel(newRegistro);
 
     registro.save()
-    .then(result =>{
-      return res.status(200).json(result);
+    .then(resultado =>{
+      return res.status(200).json(resultado);
     })
     .catch(err=>{
       return res.status(500).json(err);
     });
     
-    //res.send('Hello World');
  });
 
- app.put('/', (req, res)=> {
+ app.get('/registros', (req, res)=> {
+  //Retorna registros
+  RegistrosModel.find({})
+  .then(resposta=>{
+    return res.status(200).json(resposta);
+  })
+  .catch(err=>{
+    return res.status(500).json(err);
+  })
+
+});
+
+ app.put('/registros/:id_registro', (req, res)=> {
     //Edita registros
+
+    const registroEditado = req.body.novoRegistro;
+
+    RegistrosModel.findOneAndUpdate({_id : req.params.id_registro}, registroEditado, {new : true})
+    .then(result=>{
+      return res.status(200).json(result);
+    })
+    .catch(err=>{
+      return res.status(500).json(err);
+    });
+
  })
 
- app.delete('/', (req, res)=>{
+ app.delete('/registros/:id', (req, res)=>{
     //Deleta registros
+
+    RegistrosModel.findOneAndRemove({_id : req.params.id})
+    .then(result=>{
+      return res.status(200).json(result);
+    })
+    .catch(err=>{
+      return res.status(500).json(err);
+    });
  })
 
 const server = app.listen(3000, function () {
