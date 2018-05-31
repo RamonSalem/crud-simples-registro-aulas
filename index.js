@@ -40,6 +40,12 @@ const registro = new RegistrosModel(testRegistro);
     }
 });
 
+app.get('/atividade', (req, res)=>{
+  res.sendFile(__dirname +'/page.html');
+})
+
+
+
 
 
 app.post('/registros', (req, res)=> {
