@@ -44,6 +44,10 @@ app.get('/atividade', (req, res)=>{
   res.sendFile(__dirname +'/page.html');
 })
 
+app.get('/demotests', (req, res)=>{
+  res.status(200).json({data: 'Demo how to test api with mocha', code: 200, message : 'API should work'});
+})
+
 
 
 
@@ -115,3 +119,5 @@ const server = app.listen(3000, function () {
    
    console.log("Rodando em http://%s:%s", host, port)
 })
+
+module.exports = app;
