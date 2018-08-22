@@ -20,7 +20,7 @@ describe('GET /demotests',()=>{
         })
     })
 
-    it('it shoud NOT pass (ONLY TO DEMONSTRATE) ', (done)=>{
+    /*it('it shoud NOT pass (ONLY TO DEMONSTRATE) ', (done)=>{
         chai.request(app)
         .get('/demotests')
         .end((err, res)=>{
@@ -28,7 +28,7 @@ describe('GET /demotests',()=>{
             res.body.should.have.property('data', 'Something');
             done();
         })
-    })
+    })*/
 
     
 
